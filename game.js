@@ -135,13 +135,26 @@ function isBlocked(x,z){
 }
 function findTarget(){const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(0,0),camera);const hits=ray.intersectObjects(interactables.filter(o=>o.visible),false);if(hits.length&&hits[0].distance<3.2)return hits[0].object;return null;}
 function interact(){if(!nearObject)return;nearObject.userData.action();}
-function onKeyDown(e){const k=e.key.toLowerCase();keys[k]=true;if(k==='e'&&running)interact();if(k==='f'&&running){flashlightOn=!flashlightOn;flashlight.intensity=flashlightOn?42:0;showMessage(flashlightOn?'Фонарь включён.':'Фонарь выключен.');}if(k==='escape'){promptEl.classList.add('hidden');}}
-function onKeyUp(e){keys[e.key.toLowerCase()]=false;}
+function onKeyDown(e){
+  const k=(e.key||'').toLowerCase();
+  const code=(e.code||'').toLowerCase();
+  if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright',' ','shift'].includes(k)) e.preventDefault();
+  keys[k]=true;
+  if(code==='keyw') keys.w=true; if(code==='keya') keys.a=true; if(code==='keys') keys.s=true; if(code==='keyd') keys.d=true;
+  if(code==='shiftleft'||code==='shiftright') keys.shift=true;
+  if((k==='e'||code==='keye')&&running){e.preventDefault();interact();}
+  if((k==='f'||code==='keyf')&&running){e.preventDefault();flashlightOn=!flashlightOn;flashlight.intensity=flashlightOn?42:0;showMessage(flashlightOn?'Фонарь включён.':'Фонарь выключен.');}
+  if(k==='escape'){promptEl.classList.add('hidden');}
+}
+function onKeyUp(e){const k=(e.key||'').toLowerCase();const code=(e.code||'').toLowerCase();keys[k]=false;if(['keyw','keya','keys','keyd'].includes(code))keys[code.slice(3)]=false;if(code==='shiftleft'||code==='shiftright')keys.shift=false;}
 function onMouseMove(e){if(!running||document.pointerLockElement!==renderer.domElement)return;yaw-=e.movementX*.0022;pitch-=e.movementY*.0022;pitch=Math.max(-1.45,Math.min(1.45,pitch));syncCamera();}
 renderer.domElement.addEventListener('click',()=>{if(running&&document.pointerLockElement!==renderer.domElement)renderer.domElement.requestPointerLock?.();});
 startButton.addEventListener('click',()=>{startScreen.classList.add('hidden');running=true;buildBase();renderer.domElement.requestPointerLock?.();if(!introSeen){showMessage('База Digger Station. Сначала подготовься: проверь снаряжение, изучи карту, затем выходи.');introSeen=true;}});
 returnButton.addEventListener('click',()=>{endingScreen.classList.add('hidden');buildBase();running=true;renderer.domElement.requestPointerLock?.();showMessage('Снова на базе. Находки и репутация сохранены.');});
-addEventListener('keydown',onKeyDown);addEventListener('keyup',onKeyUp);addEventListener('mousemove',onMouseMove);
+document.addEventListener('keydown',onKeyDown,{passive:false});document.addEventListener('keyup',onKeyUp);addEventListener('mousemove',onMouseMove);
+// Keep keyboard controls available even after the pointer lock is released.
+renderer.domElement.tabIndex=0;renderer.domElement.style.outline='none';
+startButton.addEventListener('click',()=>renderer.domElement.focus());
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 
 // Initial world for the scene behind the title card.
