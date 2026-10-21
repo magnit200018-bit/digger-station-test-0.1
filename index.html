@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digger Station — первый билд</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game"></div>
+  <div id="hud">
+    <div class="brand">DIGGER <span>STATION</span><small>ПРОТОТИП 0.1</small></div>
+    <div class="status"><span class="dot"></span><span id="locationLabel">БАЗА</span></div>
+    <div class="stats"><div>НАХОДКИ <b id="findings">0</b></div><div>РЕПУТАЦИЯ <b id="rep">0</b></div></div>
+    <div id="crosshair"></div>
+    <div id="prompt" class="hidden">E — взаимодействовать</div>
+    <div id="message" class="hidden"></div>
+    <div id="objective"><b>ЗАДАЧА</b><span id="objectiveText">Осмотрись на базе и найди выход на вылазку.</span></div>
+    <div id="controls">WASD — ходить · мышь — смотреть · E — взаимодействовать · F — фонарь · Esc — курсор</div>
+  </div>
+  <div id="startScreen">
+    <div class="start-card">
+      <div class="eyebrow">ПЕРВЫЙ ИГРОВОЙ БИЛД</div>
+      <h1>DIGGER<br><span>STATION</span></h1>
+      <p>Тихая база. Заброшенный объект. И слишком много причин туда не лезть.</p>
+      <button id="startButton">НАЧАТЬ ВЫЛАЗКУ</button>
+      <div class="start-note">Лучше играть на компьютере · клавиатура и мышь</div>
+    </div>
+  </div>
+  <div id="endingScreen" class="hidden">
+    <div class="start-card ending-card">
+      <div class="eyebrow">ВЫЛАЗКА ЗАВЕРШЕНА</div>
+      <h2>Вернулся живым.</h2>
+      <p id="endingText">Находки сохранены в журнале.</p>
+      <button id="returnButton">ВЕРНУТЬСЯ НА БАЗУ</button>
+    </div>
+  </div>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
