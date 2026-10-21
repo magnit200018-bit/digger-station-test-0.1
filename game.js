@@ -58,8 +58,8 @@ function clearWorld(){
   interactables.length=0;colliders.length=0;
 }
 function makeRoom(parent, w,h,d, wallMat=mats.wall, floorMat=mats.floor) {
-  box(parent,'floor',[0,-.12,0],[w,.24,d],floorMat);
-  box(parent,'ceiling',[0,h,0],[w,.2,d],mats.dark);
+  box(parent,'floor',[0,-.12,0],[w,.24,d],floorMat,{solid:false});
+  box(parent,'ceiling',[0,h,0],[w,.2,d],mats.dark,{solid:false});
   box(parent,'backwall',[0,h/2,-d/2],[w,h,.2],wallMat);
   box(parent,'leftwall',[-w/2,h/2,0],[.2,h,d],wallMat);
   box(parent,'rightwall',[w/2,h/2,0],[.2,h,d],wallMat);
